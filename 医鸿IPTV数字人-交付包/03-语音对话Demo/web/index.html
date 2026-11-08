@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>医鸿 IPTV 数字人 · 语音对话 Demo</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2312B39B'/%3E%3Cpath d='M8 16h16M16 8v16' stroke='%23081110' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+<div class="viewport">
+  <div class="stage" id="stage">
+
+    <header class="topbar">
+      <div class="brand">
+        <span class="brandDot"></span>
+        <span>医鸿健康 · 龙华人民医院</span>
+      </div>
+      <div class="topRight">
+        <div class="channels" id="channels"></div>
+        <div class="patient">当前：张秀兰（本人）<span class="caret">▾</span></div>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="stageLeft">
+        <div class="avatarWrap">
+          <div class="avatarHost" id="avatar"></div>
+        </div>
+        <div class="voiceRow">
+          <div class="wave" id="wave"></div>
+          <div class="voiceHint" id="voiceHint">按空格键开始说话</div>
+        </div>
+        <div class="nameTag" id="nameTag">医小鸿 · 健康助手</div>
+      </section>
+
+      <section class="stageRight">
+        <div class="statusRow">
+          <span class="badge" id="badge">待机</span>
+          <span class="statusText" id="statusText">按空格键，直接说话就可以</span>
+        </div>
+
+        <div class="userLine" id="userLine"></div>
+
+        <div class="botLine" id="botLine">
+          <span class="ch said">您</span><span class="ch said">好</span><span class="ch said">，</span><span class="ch said">我</span><span class="ch said">是</span><span class="ch said">医</span><span class="ch said">小</span><span class="ch said">鸿</span><span class="ch said">。</span>
+        </div>
+
+        <div class="tip" id="tip">
+          <div class="tipTitle">您可以这样说</div>
+          <div class="tipList">
+            <span class="tipItem">我这两天血压有点高</span>
+            <span class="tipItem">帮我挂个心内科</span>
+            <span class="tipItem">我的检查报告出来了吗</span>
+            <span class="tipItem">早上忘吃药了怎么办</span>
+          </div>
+        </div>
+
+        <div class="emergency" id="emergency">
+          <div class="emTitle">请立即拨打 120</div>
+          <div class="emBody">这可能是急症。先坐下或躺下，松开领口，不要走动，等急救车来。</div>
+          <div class="emPhone">120</div>
+          <div class="emFoot">已同时通知家属 · 本提示不可打断</div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="hintbar">
+      <div class="keys">
+        <span class="key"><b>空格</b> 说话 / 结束</span>
+        <span class="key"><b>Esc</b> 打断</span>
+        <span class="key"><b>1 2 3</b> 切语音通道</span>
+        <span class="key"><b>H</b> 模拟危急语句</span>
+      </div>
+      <div class="typebox">
+        <input id="typeInput" type="text" autocomplete="off" placeholder="也可以在这里打字，按回车发送" />
+      </div>
+    </footer>
+
+    <div class="toast" id="toast"></div>
+  </div>
+</div>
+<script type="module" src="./app.js"></script>
+</body>
+</html>

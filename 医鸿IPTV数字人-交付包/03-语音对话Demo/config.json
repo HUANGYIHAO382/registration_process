@@ -1,0 +1,24 @@
+{
+  "_说明": "改完这个文件不用重启服务，刷新页面即可生效。apiKey 留空 = 该通道不可用，前端会自动降级。",
+
+  "llm": {
+    "enabled": false,
+    "baseUrl": "https://api.deepseek.com/v1",
+    "apiKey": "",
+    "model": "deepseek-chat",
+    "temperature": 0.6,
+    "maxTokens": 400
+  },
+
+  "asr": {
+    "enabled": false,
+    "baseUrl": "https://api.siliconflow.cn/v1",
+    "apiKey": "",
+    "model": "FunAudioLLM/SenseVoiceSmall"
+  },
+
+  "tts": {
+    "engine": "browser",
+    "rate": 0.88
+  }
+}
