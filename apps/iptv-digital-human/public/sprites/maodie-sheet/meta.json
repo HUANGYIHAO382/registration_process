@@ -1,0 +1,21 @@
+{
+  "id": "maodie-sheet",
+  "label": "安安 · 开源精灵图集（耄耋）",
+  "engine": "sheet",
+  "displayName": "安安",
+  "attribution": "Maodie Codex Pet by Octane0411 — MIT / assets CC BY 4.0",
+  "sheet": {
+    "file": "spritesheet.webp",
+    "cols": 8,
+    "rows": 11,
+    "frameW": 192,
+    "frameH": 208
+  },
+  "anims": {
+    "idle": { "row": 0, "frames": 8, "fps": 8, "loop": true },
+    "listen": { "row": 6, "frames": 8, "fps": 7, "loop": true },
+    "think": { "row": 6, "frames": 8, "fps": 6, "loop": true },
+    "speak": { "row": 3, "frames": 8, "fps": 10, "loop": true },
+    "alert": { "row": 5, "frames": 8, "fps": 8, "loop": true }
+  }
+}

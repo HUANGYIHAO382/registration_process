@@ -1,0 +1,25 @@
+{
+  "_说明": "复制为 config.json 后填写 apiKey。Key 只存在服务端，前端永远拿不到。改完刷新页面即可。",
+  "devToken": "demo-dev-token",
+  "llm": {
+    "enabled": false,
+    "baseUrl": "https://api.deepseek.com/v1",
+    "apiKey": "",
+    "model": "deepseek-chat",
+    "temperature": 0.6,
+    "maxTokens": 400
+  },
+  "asr": {
+    "enabled": false,
+    "baseUrl": "https://api.siliconflow.cn/v1",
+    "apiKey": "",
+    "model": "FunAudioLLM/SenseVoiceSmall"
+  },
+  "tts": {
+    "engine": "browser",
+    "rate": 0.88
+  },
+  "bind": {
+    "activeVariant": "A"
+  }
+}

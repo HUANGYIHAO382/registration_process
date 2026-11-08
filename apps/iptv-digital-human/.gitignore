@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+# 真实密钥配置不入库；请用 config.example.json 复制
+server/config.json
+server/data/experiment.jsonl
+.vscode/
+.idea/

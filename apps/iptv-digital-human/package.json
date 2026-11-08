@@ -1,0 +1,22 @@
+{
+  "name": "iptv-digital-human",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "医鸿 IPTV 数字人 · Vue3 网页 Demo（1920×1080）",
+  "scripts": {
+    "dev": "concurrently -k -n server,web -c teal,cyan \"node server/index.mjs\" \"vite\"",
+    "dev:web": "vite",
+    "dev:server": "node server/index.mjs",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "concurrently": "^9.1.2",
+    "vite": "^6.0.7"
+  }
+}

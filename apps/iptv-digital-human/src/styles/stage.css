@@ -1,0 +1,132 @@
+/* 固定 1920×1080 舞台：业务布局只按此分辨率写，缩放交给 transform */
+
+.viewport {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  overflow: auto;
+}
+
+.stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: top left;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(1200px 700px at 22% 28%, #123029 0%, transparent 62%),
+    radial-gradient(900px 600px at 82% 78%, #0f2a24 0%, transparent 60%),
+    linear-gradient(160deg, var(--bg2) 0%, var(--bg) 55%, #060d0c 100%);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+.stage-main {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 720px 1fr;
+  gap: 32px;
+  padding: 24px 64px 16px;
+}
+
+.stage-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.stage-right {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 16px;
+}
+
+.avatar-host {
+  width: 520px;
+  height: 760px;
+  flex: 0 0 auto;
+}
+
+.name-tag {
+  position: absolute;
+  left: 50%;
+  bottom: 48px;
+  transform: translateX(-50%);
+  font-size: var(--fs-sub);
+  color: var(--ink2);
+  letter-spacing: 2px;
+  background: rgba(8, 17, 16, 0.55);
+  padding: 8px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 66, 58, 0.7);
+}
+
+.panel {
+  background: rgba(19, 36, 31, 0.72);
+  border: 1px solid rgba(34, 66, 58, 0.7);
+  border-radius: 20px;
+  padding: 28px 32px;
+}
+
+.btn-primary {
+  min-height: 72px;
+  padding: 0 40px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, var(--teal) 0%, var(--teal-dim) 100%);
+  color: #04120f;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(18, 179, 155, 0.25);
+}
+
+.btn-primary:focus-visible,
+.btn-ghost:focus-visible,
+.focusable:focus-visible {
+  outline: 4px solid var(--focus);
+  outline-offset: 4px;
+}
+
+.btn-ghost {
+  min-height: 64px;
+  padding: 0 28px;
+  border-radius: 14px;
+  border: 2px solid var(--line);
+  background: var(--panel);
+  font-size: var(--fs-sub);
+  color: var(--ink);
+}
+
+.btn-ghost.is-active {
+  border-color: var(--teal);
+  box-shadow: inset 0 0 0 2px rgba(18, 179, 155, 0.35);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.hero-title {
+  font-size: var(--fs-hero);
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0 0 16px;
+}
+
+.section-title {
+  font-size: var(--fs-title);
+  margin: 0 0 12px;
+  font-weight: 600;
+}
+
+.body-text {
+  font-size: var(--fs-body);
+  line-height: 1.45;
+  margin: 0;
+}

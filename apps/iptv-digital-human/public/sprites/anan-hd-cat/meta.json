@@ -1,0 +1,26 @@
+{
+  "id": "anan-hd-cat",
+  "label": "安安 · 高清卡通猫（透明底）",
+  "engine": "sprite",
+  "displayName": "安安",
+  "size": { "width": 768, "height": 1024 },
+  "idleIntervalMs": 999999,
+  "speakIntervalMs": 180,
+  "frames": {
+    "idle": ["body-idle-1.png"],
+    "listen": ["body-listen.png"],
+    "think": ["body-idle-2.png"],
+    "speakBody": ["body-idle-1.png"],
+    "alert": ["body-alert.png"],
+    "mouth": {
+      "sil": "mouth-sil.png",
+      "m": "mouth-m.png",
+      "a": "mouth-a.png",
+      "o": "mouth-o.png",
+      "e": "mouth-a.png",
+      "i": "mouth-o.png",
+      "u": "mouth-o.png",
+      "smile": "mouth-sil.png"
+    }
+  }
+}

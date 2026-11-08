@@ -1,0 +1,14 @@
+# 依赖与构建
+node_modules/
+dist/
+.DS_Store
+*.log
+.vscode/
+.idea/
+
+# 密钥与本地运行数据（只提交 example）
+**/server/config.json
+**/server/data/
+.env
+.env.*
+!.env.example

@@ -1,0 +1,29 @@
+{
+  "defaultPackId": "maodie-sheet",
+  "packs": [
+    {
+      "id": "maodie-sheet",
+      "label": "安安 · 开源图集（真帧待机）",
+      "role": "mascot",
+      "engine": "sheet",
+      "complexity": "medium",
+      "note": "基于 maodie-codex-pet，idle 为连续帧循环"
+    },
+    {
+      "id": "anan-hd-cat",
+      "label": "安安 · 高清立绘（CSS 呼吸）",
+      "role": "mascot",
+      "engine": "sprite",
+      "complexity": "medium",
+      "note": "单帧待机，避免 AI 多图硬切"
+    },
+    {
+      "id": "mascot-svg-cat",
+      "label": "安安 · SVG 备用",
+      "role": "mascot",
+      "engine": "svg",
+      "complexity": "low",
+      "enabled": false
+    }
+  ]
+}

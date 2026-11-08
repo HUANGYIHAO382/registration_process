@@ -1,0 +1,50 @@
+/* 大屏主题色与适老化基础字号（设计分辨率 1920×1080） */
+:root {
+  --bg: #081110;
+  --bg2: #0d1a17;
+  --panel: #13241f;
+  --panel-hi: #1a302a;
+  --line: #22423a;
+  --ink: #eef4f1;
+  --ink2: #b9c9c4;
+  --muted: #7e948d;
+  --teal: #12b39b;
+  --teal-dim: #0e8c7a;
+  --warn: #e0533d;
+  --amber: #f0b860;
+  --focus: #f0b860;
+  /* 适老化：主文案建议 48–64px */
+  --fs-hero: 56px;
+  --fs-title: 40px;
+  --fs-body: 32px;
+  --fs-sub: 24px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Source Han Sans SC', 'Noto Sans SC',
+    system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: var(--ink);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input {
+  font: inherit;
+  color: inherit;
+}
