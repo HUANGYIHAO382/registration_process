@@ -12,3 +12,6 @@ dist/
 .env
 .env.*
 !.env.example
+
+# 预览包内 PNG 母版不入库（WebP 已够运行与预览）
+docs/anan-cat-v3-preview/**/*.png

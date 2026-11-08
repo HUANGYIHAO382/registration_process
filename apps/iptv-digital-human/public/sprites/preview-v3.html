@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>安安 v3 · 待机小动作预览（Spine 曲线版）</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 32px 28px 56px;
+    background: radial-gradient(120% 90% at 50% 0%, #17403f 0%, #0b1f1f 62%, #071414 100%);
+    color: #e6f2ee;
+    font: 14px/1.7 "HarmonyOS Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  h1 { font-size: 20px; margin: 0 0 4px; font-weight: 600; letter-spacing: .3px; }
+  .sub { color: #7fa39b; font-size: 13px; margin-bottom: 28px; }
+  .row { display: flex; gap: 22px; flex-wrap: wrap; align-items: flex-start; }
+  .card {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(126,196,180,.18);
+    border-radius: 16px; padding: 16px 16px 14px;
+    width: 300px;
+  }
+  .card h2 { font-size: 13px; margin: 0 0 12px; font-weight: 500; color: #9ec9be; letter-spacing: .5px; }
+  .stage {
+    position: relative; width: 100%; aspect-ratio: 3 / 4;
+    overflow: hidden; border-radius: 10px;
+    background: radial-gradient(70% 60% at 50% 88%, rgba(46,139,139,.20), transparent 70%);
+  }
+  /* 与项目内 SpriteAvatarEngine 完全一致的对齐方式 */
+  .stage .L {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: contain; object-position: center bottom;
+    pointer-events: none;
+    filter: drop-shadow(0 18px 22px rgba(0,0,0,.30));
+  }
+  /* 尾巴角度由 JS 逐帧驱动（双谐波 + 微震颤 + 阻尼快摆），见 script */
+  .tail { transform-origin: 81.02% 89.41%; }
+  .btns { display: flex; gap: 7px; margin-top: 12px; flex-wrap: wrap; }
+  button {
+    font: inherit; font-size: 12px; padding: 5px 11px; cursor: pointer;
+    background: rgba(255,255,255,.05); color: #cfe6df;
+    border: 1px solid rgba(126,196,180,.26); border-radius: 999px;
+    transition: .15s;
+  }
+  button:hover { background: rgba(46,139,139,.28); border-color: #3fa89c; }
+  button.on { background: #2e8b8b; border-color: #47b3a4; color: #fff; }
+  .note { margin-top: 10px; font-size: 11.5px; color: #6d928b; line-height: 1.6; }
+  .strip { margin-top: 34px; }
+  .strip h2 { font-size: 13px; color: #9ec9be; font-weight: 500; margin: 0 0 14px; }
+  .thumbs { display: flex; gap: 12px; flex-wrap: wrap; }
+  .thumb { width: 104px; text-align: center; }
+  .thumb .box {
+    width: 100%; aspect-ratio: 3 / 4; border-radius: 8px; overflow: hidden;
+    background: radial-gradient(70% 60% at 50% 85%, rgba(46,139,139,.22), transparent 72%);
+    border: 1px solid rgba(126,196,180,.14);
+  }
+  .thumb img { width: 100%; height: 100%; object-fit: contain; object-position: center bottom; display: block; }
+  .thumb span { display: block; font-size: 11px; color: #7fa39b; margin-top: 6px; }
+</style>
+</head>
+<body>
+  <h1>安安 v3 · 待机小动作预览（Spine 曲线版）</h1>
+  <div class="sub">动作曲线按 Spine 社区实践重做：预备(反向)→爆发(快)→回弹→长回落，尾巴双谐波+微震颤。身体依旧完全静止。</div>
+
+  <div class="row">
+    <div class="card">
+      <h2>待机 · 眨眼 + 抖耳 + 摆尾</h2>
+      <div class="stage" id="stageIdle"></div>
+      <div class="note">抖耳有四种模式：单边（预备→爆发→回弹→回落，最常见）、双耳两级、单边连抽两下、慢垂后抬起（像被什么吸引了）。尾巴 = 慢摆 + 第二谐波 + 0.8s 微震颤，每 3.5–12.5 秒插一次阻尼快摆。</div>
+    </div>
+
+    <div class="card">
+      <h2>说话 · 下颌开合</h2>
+      <div class="stage" id="stageSpeak"></div>
+      <div class="btns"><button id="speakBtn">开始说话</button></div>
+      <div class="note">三级开口（细缝 / 中开 / 大张）+ 音节式节奏。只有嘴部像素变化。</div>
+    </div>
+
+    <div class="card">
+      <h2>状态切换</h2>
+      <div class="stage" id="stageState"></div>
+      <div class="btns" id="stateBtns">
+        <button data-s="body-idle" class="on">待机</button>
+        <button data-s="body-listen">倾听</button>
+        <button data-s="body-happy">开心</button>
+        <button data-s="body-alert">关切</button>
+        <button data-s="body-blink">眨眼</button>
+      </div>
+      <div class="note">重点看切换瞬间：头顶、爪底、围巾是否位移。</div>
+    </div>
+  </div>
+
+  <div class="strip">
+    <h2>素材（864 × 1152，RGBA）</h2>
+    <div class="thumbs">
+      <div class="thumb"><div class="box"><img src="anan-cat-v3/layers/base-body-idle.png" alt=""></div><span>base-idle</span></div>
+      <div class="thumb"><div class="box"><img src="anan-cat-v3/layers/base-body-idle-ear-l-a.png" alt=""></div><span>左耳预备 -1.5°</span></div>
+      <div class="thumb"><div class="box"><img src="anan-cat-v3/layers/base-body-idle-ear-l1.png" alt=""></div><span>左耳回弹 3°</span></div>
+      <div class="thumb"><div class="box"><img src="anan-cat-v3/layers/base-body-idle-ear-l2.png" alt=""></div><span>左耳到位 7°</span></div>
+      <div class="thumb"><div class="box"><img src="anan-cat-v3/layers/base-body-idle-ear-r2.png" alt=""></div><span>右耳到位 7°</span></div>
+      <div class="thumb"><div class="box"><img src="anan-cat-v3/layers/base-body-idle-ear-b2.png" alt=""></div><span>双耳 8°</span></div>
+      <div class="thumb"><div class="box"><img src="anan-cat-v3/layers/base-body-blink.png" alt=""></div><span>眨眼</span></div>
+      <div class="thumb"><div class="box"><img src="anan-cat-v3/layers/base-mouth-1.png" alt=""></div><span>嘴 1 · 微开</span></div>
+      <div class="thumb"><div class="box"><img src="anan-cat-v3/layers/base-mouth-2.png" alt=""></div><span>嘴 2 · 中开</span></div>
+      <div class="thumb"><div class="box"><img src="anan-cat-v3/layers/base-mouth-3.png" alt=""></div><span>嘴 3 · 大张</span></div>
+    </div>
+  </div>
+
+<script>
+  const P = 'anan-cat-v3/layers/';
+  const IDLE = P + 'base-body-idle.png';
+
+  function buildStage(el) {
+    el.innerHTML =
+      `<img class="L base" src="${IDLE}" alt="">` +
+      `<img class="L" src="${P}tail-shadow.png" alt="">` +
+      `<img class="L tail" src="${P}part-tail.png" alt="">`;
+    return {
+      el,
+      base: el.querySelector('.base'),
+      tail: el.querySelector('.tail'),
+      busy: false,
+    };
+  }
+
+  /* ---------- 尾巴：Spine 式有机运动 ----------
+     1) 双谐波（6.4–8.2s 慢摆 + 2.7–3.5s 次谐波）→ 非正弦、有不对称
+     2) 0.8s 周期、±0.32° 的高频微震颤 → 模拟肌肉噪声，消除"塑料感"
+     3) 偶发阻尼快摆（弹簧过冲回落）→ 有质量感的惯性
+     不再用固定周期的 CSS 正弦 —— 完美循环一眼假。 */
+  function startTail(stage) {
+    const el = stage.tail;
+    const T1 = 6.4 + Math.random() * 1.8;
+    const T2 = 2.7 + Math.random() * 0.8;
+    const phase = Math.random() * 10;
+    let flick = null;
+    let nextFlick = performance.now() + 3000 + Math.random() * 7000;
+    function frame(now) {
+      const t = now / 1000 + phase;
+      let a = 3.0 * Math.sin(2 * Math.PI * t / T1)
+            + 1.05 * Math.sin(2 * Math.PI * t / T2 + 1.35)
+            + 0.32 * Math.sin(2 * Math.PI * t / 0.83 + Math.sin(t * 0.41) * 1.7);
+      if (now > nextFlick) {
+        flick = { t0: now, amp: (Math.random() < 0.5 ? 1 : -1) * (4.5 + Math.random() * 3) };
+        nextFlick = now + 3500 + Math.random() * 9000;
+      }
+      if (flick) {
+        const dt = (now - flick.t0) / 1000;
+        if (dt > 1.7) flick = null;
+        else a += flick.amp * Math.exp(-3.4 * dt) * Math.sin(11.5 * dt);
+      }
+      el.style.transform = `rotate(${a.toFixed(3)}deg)`;
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  /* ---------- 耳朵：预备 → 爆发 → 回弹 → 回落 ----------
+     参考 Spine 曲线实践：主动作前有反向小波谷（预备），
+     冲过目标后过冲（回弹到中间位），再用更长时间回到原点。
+     起止时间不互相一致，爆发段压短、回落段拉长。 */
+  const EAR = {
+    b1: P + 'base-body-idle-ear-b1.png',
+    b2: P + 'base-body-idle-ear-b2.png',
+    la: P + 'base-body-idle-ear-l-a.png',
+    l1: P + 'base-body-idle-ear-l1.png',
+    l2: P + 'base-body-idle-ear-l2.png',
+    ra: P + 'base-body-idle-ear-r-a.png',
+    r1: P + 'base-body-idle-ear-r1.png',
+    r2: P + 'base-body-idle-ear-r2.png',
+  };
+
+  const EAR_PATTERNS = [
+    // 单边：预备(-1.5°)→ 到位(7°)→ 回弹(3°)→ 长回落  —— 最常用
+    { w: 6, seq: [[EAR.la, 70], [EAR.l2, 55], [EAR.l1, 50], [IDLE, 110]] },
+    { w: 6, seq: [[EAR.ra, 70], [EAR.r2, 55], [EAR.r1, 50], [IDLE, 110]] },
+    // 双耳同步：起势 → 到位 → 回落
+    { w: 3, seq: [[EAR.b1, 50], [EAR.b2, 55], [EAR.b1, 70], [IDLE, 120]] },
+    // 单边连抽两下（像抖毛）
+    { w: 2, seq: [[EAR.l2, 45], [IDLE, 60], [EAR.l2, 45], [IDLE, 100]] },
+    { w: 2, seq: [[EAR.r2, 45], [IDLE, 60], [EAR.r2, 45], [IDLE, 100]] },
+    // 慢垂后抬起（注意力被吸引）
+    { w: 1, seq: [[EAR.l1, 180], [EAR.l2, 240], [EAR.l1, 170], [IDLE, 90]] },
+  ];
+
+  function pickEar() {
+    const pool = [];
+    EAR_PATTERNS.forEach(p => { for (let i = 0; i < p.w; i++) pool.push(p); });
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+
+  function earFlick(stage) {
+    if (stage.busy) return;
+    stage.busy = true;
+    let t = 0;
+    pickEar().seq.forEach(([src, ms]) => {
+      setTimeout(() => { stage.base.src = src; }, t);
+      t += ms;
+    });
+    setTimeout(() => { stage.busy = false; }, t);
+  }
+
+  function loopEar(stage) {
+    setTimeout(() => {
+      earFlick(stage);
+      loopEar(stage);
+    }, 4200 + Math.random() * 5600);
+  }
+
+  /* ---------- 眨眼：四档随机 ---------- */
+  const BLINKS = [
+    { d: 140, gap: 0, w: 5 },   // 快眨
+    { d: 180, gap: 0, w: 4 },   // 普通
+    { d: 420, gap: 0, w: 2 },   // 慢眨（猫的示好）
+    { d: 150, gap: 170, w: 2 }, // 连眨两下
+  ];
+
+  function pickBlink() {
+    const pool = [];
+    BLINKS.forEach(b => { for (let i = 0; i < b.w; i++) pool.push(b); });
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+
+  function doBlink(stage, b, done) {
+    if (stage.busy) { done(); return; }
+    stage.busy = true;
+    stage.base.src = P + 'base-body-blink.png';
+    setTimeout(() => {
+      stage.base.src = IDLE;
+      if (!b.gap) { stage.busy = false; done(); return; }
+      setTimeout(() => {
+        stage.base.src = P + 'base-body-blink.png';
+        setTimeout(() => {
+          stage.base.src = IDLE;
+          stage.busy = false;
+          done();
+        }, b.d);
+      }, b.gap);
+    }, b.d);
+  }
+
+  function loopBlink(stage) {
+    setTimeout(() => {
+      doBlink(stage, pickBlink(), () => loopBlink(stage));
+    }, 3200 + Math.random() * 3600);
+  }
+
+  /* ---------- 说话：音节式节奏 ---------- */
+  const MOUTH = [IDLE, P + 'base-mouth-1.png', P + 'base-mouth-2.png', P + 'base-mouth-3.png'];
+
+  function syllable(stage, done) {
+    const open = 1 + Math.floor(Math.random() * 3);
+    const hold = 70 + Math.random() * 90;
+    stage.base.src = MOUTH[open];
+    setTimeout(() => {
+      if (Math.random() < 0.5) {
+        stage.base.src = IDLE;
+        setTimeout(done, 45 + Math.random() * 70);
+      } else {
+        done();
+      }
+    }, hold);
+  }
+
+  function phrase(stage, n, done) {
+    if (n <= 0) { done(); return; }
+    syllable(stage, () => phrase(stage, n - 1, done));
+  }
+
+  function speakLoop(stage) {
+    if (!stage.speaking) return;
+    phrase(stage, 4 + Math.floor(Math.random() * 6), () => {
+      stage.base.src = IDLE;
+      setTimeout(() => speakLoop(stage), 220 + Math.random() * 420);
+    });
+  }
+
+  /* ---------- 实例化 ---------- */
+  const sIdle = buildStage(document.getElementById('stageIdle'));
+  loopBlink(sIdle);
+  loopEar(sIdle);
+  startTail(sIdle);
+
+  const sSpeak = buildStage(document.getElementById('stageSpeak'));
+  startTail(sSpeak);
+  const speakBtn = document.getElementById('speakBtn');
+  speakBtn.onclick = () => {
+    sSpeak.speaking = !sSpeak.speaking;
+    if (sSpeak.speaking) {
+      speakBtn.textContent = '停止';
+      speakBtn.classList.add('on');
+      speakLoop(sSpeak);
+    } else {
+      sSpeak.base.src = IDLE;
+      speakBtn.textContent = '开始说话';
+      speakBtn.classList.remove('on');
+    }
+  };
+
+  const sState = buildStage(document.getElementById('stageState'));
+  document.getElementById('stateBtns').onclick = (e) => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    [...e.currentTarget.children].forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    sState.base.src = `${P}base-${b.dataset.s}.png`;
+  };
+</script>
+</body>
+</html>

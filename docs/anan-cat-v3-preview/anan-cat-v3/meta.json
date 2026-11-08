@@ -1,0 +1,295 @@
+{
+  "id": "anan-cat-v3",
+  "label": "安安 · 高清立绘 v3（全新生成 · 纯透明底）",
+  "engine": "sprite",
+  "displayName": "安安",
+  "size": {
+    "width": 864,
+    "height": 1152
+  },
+  "idleIntervalMs": 999999,
+  "speakIntervalMs": 180,
+  "blink": {
+    "file": "body-blink.webp",
+    "minGapMs": 3200,
+    "maxGapMs": 6800,
+    "durationMs": 160,
+    "variants": {
+      "quick": {
+        "durationMs": 140,
+        "weight": 5
+      },
+      "normal": {
+        "durationMs": 180,
+        "weight": 4
+      },
+      "slow": {
+        "durationMs": 420,
+        "weight": 2
+      },
+      "double": {
+        "durationMs": 150,
+        "gapMs": 170,
+        "weight": 2
+      }
+    },
+    "note": "四档随机，避免机械节拍；slow 是猫的慢眨眼，double 是连眨两下。"
+  },
+  "earFlick": {
+    "levels": [
+      {
+        "key": "ear-b1",
+        "file": "layers/base-body-idle-ear-b1.webp",
+        "angleDeg": [
+          6.0,
+          6.0
+        ]
+      },
+      {
+        "key": "ear-b2",
+        "file": "layers/base-body-idle-ear-b2.webp",
+        "angleDeg": [
+          11.0,
+          11.0
+        ]
+      },
+      {
+        "key": "ear-l-a",
+        "file": "layers/base-body-idle-ear-l-a.webp",
+        "angleDeg": [
+          -2.0,
+          0
+        ],
+        "role": "anticipation"
+      },
+      {
+        "key": "ear-l1",
+        "file": "layers/base-body-idle-ear-l1.webp",
+        "angleDeg": [
+          4.5,
+          0
+        ],
+        "role": "settle"
+      },
+      {
+        "key": "ear-l2",
+        "file": "layers/base-body-idle-ear-l2.webp",
+        "angleDeg": [
+          10.0,
+          0
+        ],
+        "role": "peak"
+      },
+      {
+        "key": "ear-r-a",
+        "file": "layers/base-body-idle-ear-r-a.webp",
+        "angleDeg": [
+          0,
+          -2.0
+        ],
+        "role": "anticipation"
+      },
+      {
+        "key": "ear-r1",
+        "file": "layers/base-body-idle-ear-r1.webp",
+        "angleDeg": [
+          0,
+          4.5
+        ],
+        "role": "settle"
+      },
+      {
+        "key": "ear-r2",
+        "file": "layers/base-body-idle-ear-r2.webp",
+        "angleDeg": [
+          0,
+          10.0
+        ],
+        "role": "peak"
+      }
+    ],
+    "patterns": [
+      {
+        "name": "single-L",
+        "weight": 6,
+        "sequence": [
+          "ear-l-a",
+          "ear-l2",
+          "ear-l1",
+          "idle"
+        ],
+        "stepMs": [
+          70,
+          55,
+          50,
+          110
+        ]
+      },
+      {
+        "name": "single-R",
+        "weight": 6,
+        "sequence": [
+          "ear-r-a",
+          "ear-r2",
+          "ear-r1",
+          "idle"
+        ],
+        "stepMs": [
+          70,
+          55,
+          50,
+          110
+        ]
+      },
+      {
+        "name": "both",
+        "weight": 3,
+        "sequence": [
+          "ear-b1",
+          "ear-b2",
+          "ear-b1",
+          "idle"
+        ],
+        "stepMs": [
+          50,
+          55,
+          70,
+          120
+        ]
+      },
+      {
+        "name": "double-L",
+        "weight": 2,
+        "sequence": [
+          "ear-l2",
+          "idle",
+          "ear-l2",
+          "idle"
+        ],
+        "stepMs": [
+          45,
+          60,
+          45,
+          100
+        ]
+      },
+      {
+        "name": "double-R",
+        "weight": 2,
+        "sequence": [
+          "ear-r2",
+          "idle",
+          "ear-r2",
+          "idle"
+        ],
+        "stepMs": [
+          45,
+          60,
+          45,
+          100
+        ]
+      },
+      {
+        "name": "slow-attention",
+        "weight": 1,
+        "sequence": [
+          "ear-l1",
+          "ear-l2",
+          "ear-l1",
+          "idle"
+        ],
+        "stepMs": [
+          180,
+          240,
+          170,
+          90
+        ]
+      }
+    ],
+    "minGapMs": 4200,
+    "maxGapMs": 9800,
+    "note": "曲线按 Spine 实践：预备(反向小)→爆发(快)→过冲回弹(中间位)→长回落。形变带距离增益（耳根 35% / 耳尖 115%），耳尖甩得比耳根多，不是整体刚性平移。禁止改用切图层旋转 —— 耳根切口会露成一条斜线。"
+  },
+  "tail": {
+    "layer": "layers/part-tail.webp",
+    "shadow": "layers/tail-shadow.webp",
+    "pivot": "81.02% 89.41%",
+    "driver": "raf",
+    "wave": {
+      "harmonic1": {
+        "ampDeg": 3.0,
+        "periodMs": [
+          6400,
+          8200
+        ]
+      },
+      "harmonic2": {
+        "ampDeg": 1.05,
+        "periodMs": [
+          2700,
+          3500
+        ]
+      },
+      "tremor": {
+        "ampDeg": 0.32,
+        "periodMs": 830
+      }
+    },
+    "flick": {
+      "minGapMs": 3500,
+      "maxGapMs": 12500,
+      "ampDeg": [
+        4.5,
+        7.5
+      ],
+      "damping": 3.4,
+      "omega": 11.5
+    },
+    "note": "双谐波+微震颤+阻尼快摆，破完美循环。底座已挖尾巴填深棕阴影。"
+  },
+  "frames": {
+    "idle": [
+      "body-idle.webp"
+    ],
+    "blink": [
+      "body-blink.webp"
+    ],
+    "listen": [
+      "body-listen.webp"
+    ],
+    "think": [
+      "body-idle.webp"
+    ],
+    "happy": [
+      "body-happy.webp"
+    ],
+    "speakBody": [
+      "body-idle.webp"
+    ],
+    "alert": [
+      "body-alert.webp"
+    ],
+    "mouth": {
+      "sil": "body-idle.webp",
+      "m": "body-idle.webp",
+      "smile": "body-idle.webp",
+      "a": "mouth-3.webp",
+      "e": "mouth-2.webp",
+      "o": "mouth-2.webp",
+      "i": "mouth-1.webp",
+      "u": "mouth-1.webp"
+    }
+  },
+  "mouthNote": {
+    "why": "猫不发音位口型。原来的 a（竖椭圆大开口）与 o（收圆嘴唇）是人类嘴型，已废弃。",
+    "how": "以 mouth-a 的开口为素材，围绕嘴线 y=465 竖向压缩成 3 级（0.30 / 0.56 / 0.82），只合成回嘴部羽化椭圆，嘴部以外与待机帧逐字节相同。",
+    "src": "母版 PNG 只在仓库 _png 保留，不随分发包下发（原口型不再使用）"
+  },
+  "alignment": {
+    "canvas": "864x1152",
+    "figureHeight": 1012,
+    "figureBottom": 1083,
+    "figureCenterX": 486,
+    "note": "所有整帧 bbox 高 1012、底边 1083、重心 x 486。抖耳/嘴型帧由 idle 形变而来，身体部分逐字节一致。"
+  }
+}

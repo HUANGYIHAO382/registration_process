@@ -7,3 +7,11 @@ server/config.json
 server/data/experiment.jsonl
 .vscode/
 .idea/
+
+# 素材生成中间产物 / 打包临时目录，不入库
+public/sprites/_gen/
+public/sprites/_pkg/
+
+# 安安 v3 运行只用 WebP；PNG 母版体积大，本地保留即可
+public/sprites/anan-cat-v3/**/*.png
+public/sprites/anan-cat-v2/**/*.png

@@ -1,6 +1,14 @@
 {
-  "defaultPackId": "maodie-sheet",
+  "defaultPackId": "anan-cat-v3",
   "packs": [
+    {
+      "id": "anan-cat-v3",
+      "label": "安安 · v3 分层（眨眼/抖耳/摆尾）",
+      "role": "mascot",
+      "engine": "layered",
+      "complexity": "medium",
+      "note": "身体静止，局部微动作；来自 docs/anan-cat-v3-preview"
+    },
     {
       "id": "maodie-sheet",
       "label": "安安 · 开源图集（真帧待机）",
